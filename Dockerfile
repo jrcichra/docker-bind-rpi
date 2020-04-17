@@ -1,9 +1,9 @@
 FROM ubuntu:bionic-20190612 AS add-apt-repositories
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
- && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
- && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg \
+    && apt-key adv --fetch-keys http://www.webmin.com/jcameron-key.asc \
+    && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 
 FROM ubuntu:bionic-20190612
 
@@ -19,11 +19,12 @@ COPY --from=add-apt-repositories /etc/apt/trusted.gpg /etc/apt/trusted.gpg
 COPY --from=add-apt-repositories /etc/apt/sources.list /etc/apt/sources.list
 
 RUN rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
- && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-      bind9=1:${BIND_VERSION}* bind9-host=1:${BIND_VERSION}* dnsutils \
-      webmin=${WEBMIN_VERSION}* \
- && rm -rf /var/lib/apt/lists/*
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    bind9=1:${BIND_VERSION}* bind9-host=1:${BIND_VERSION}* dnsutils \
+    webmin=${WEBMIN_VERSION}* \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 
